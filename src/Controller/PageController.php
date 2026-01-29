@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Team;
+use App\Service\ProductsService;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,13 +16,17 @@ class PageController extends AbstractController
     {
         $repository = $doctrine->getRepository(Team::class);
         $team = $repository->findAll();
-        return $this->render('page/index.html.twig', compact('team'));
+        $productRepository = $doctrine->getRepository(\App\Entity\Product::class);
+        $products = $productRepository->findAll();
+        return $this->render('page/index.html.twig', compact('team', 'products'));
     }
 
     #[Route('/about', name: 'about')]
-    public function about(): Response
+    public function about(ManagerRegistry $doctrine): Response
     {
-        return $this->render('page/about.html.twig', []);
+        $repository = $doctrine->getRepository(Team::class);
+        $team = $repository->findAll();   
+        return $this->render('page/about.html.twig', compact('team'));
     }
 
     #[Route('/service', name: 'service')]
@@ -53,5 +58,4 @@ class PageController extends AbstractController
     {
         return $this->render('page/contact.html.twig', []);
     }
-
 }
