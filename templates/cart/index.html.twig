@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cart{% endblock %}
+
+{% block body %}
+    <div class="container py-5">
+        <div class="row g-5">
+            <div class="col-lg-8">
+                {% for item in items %}
+                    {# Añadimos el ID para el efecto jQuery de borrado (Punto 3.4.2) #}
+                    <div class="blog-item mb-5" id="item-{{ item.id }}">
+                        <div class="row g-0 bg-light overflow-hidden">
+                            <div class="col-12 col-sm-5 h-100">
+                                <img class="img-fluid h-100" src="/img/{{ item.photo }}" style="object-fit: cover;">
+                            </div>
+                            <div class="col-12 col-sm-7 h-100 d-flex flex-column justify-content-center">
+                                <div class="p-4">
+                                    <div class="d-flex mb-3">
+                                         <h4 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">
+                                            {{ item.price }} € (x{{ item.quantity }})
+                                         </h4>
+                                    </div>
+                                    <h5 class="text-uppercase mb-3">{{ item.name }}</h5>
+                                    
+                                    {# Enlace para eliminar (Punto 3.4.2) #}
+                                    <a href="{{ path('cart_delete', {'id': item.id}) }}" class="btn btn-primary py-2 px-4 remove-from-cart" data-id="{{ item.id }}">
+                                        Remove from cart
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="bg-light p-4 text-center">
+                        <h4>Your cart is empty</h4>
+                        <a href="{{ path('product') }}" class="btn btn-primary mt-3">Go to shop</a>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="col-lg-4">
+                <div>
+                    <h3 class="text-uppercase border-start border-5 border-primary ps-3 mb-4">Cart Summary</h3>
+                    <div class="bg-light text-center" style="padding: 30px;">
+                        <div class="d-flex mb-3">
+                            {# ID totalCart para actualizarlo por JS (Punto 3.4.2) #}
+                            <h4 id="totalCart" class="text-uppercase ps-3 mb-4">Total: {{ totalCart }} €</h4>
+                        </div>
+                        <a href="" class="btn btn-primary py-2 px-4">Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
